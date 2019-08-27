@@ -6,11 +6,8 @@ const log = console.log;
 const error = chalk.bold.red;
 const warning = chalk.keyword("orange");
 const success = chalk.bold.greenBright;
-// log(error("Error!"));
-// log(warning("Warning!"));
-// log(success("Success!"));
 
-const addNote = function({ title, body }) {
+const addNote = ({ title, body }) => {
   const notes = loadNotes();
 
   const isDuplicates = notes.filter(note => note.title === title);
@@ -24,19 +21,20 @@ const addNote = function({ title, body }) {
   }
 };
 
-const removeNote = function({ title }) {
+const removeNote = ({ title }) => {
   const notes = loadNotes();
-  const noteIndex = notes.findIndex(note => note.title === title);
-  if (noteIndex === -1)
-    log(error("There is no such note with the given title"));
-  else {
-    notes.splice(noteIndex, 1);
-    saveNote(notes);
+  const newNotes = notes.filter(note => note.title !== title);
+
+  if (notes.length > newNotes.length) {
     log(success("Note Removed Successfully"));
+    saveNote(newNotes);
+  } else {
+    log(error("There is no such note with the given title"));
   }
+  console.log(notes.length, newNotes.length);
 };
 
-const readNote = function({ title }) {
+const readNote = ({ title }) => {
   const notes = loadNotes();
   const note = notes.find(note => note.title === title);
   if (!note) log(error("There is no such note with the given title"));
@@ -45,7 +43,8 @@ const readNote = function({ title }) {
     console.log(note);
   }
 };
-const listNotes = function() {
+
+const listNotes = () => {
   const notes = loadNotes();
   log(success("Here you go..."));
   console.log(`There are totle ${notes.length} notes.`);
@@ -54,7 +53,7 @@ const listNotes = function() {
   });
 };
 
-const loadNotes = function() {
+const loadNotes = () => {
   try {
     const notes = fs.readFileSync("notes.json");
     const notesJSON = notes.toString();
@@ -64,7 +63,7 @@ const loadNotes = function() {
   }
 };
 
-const saveNote = function(notes) {
+const saveNote = notes => {
   const notesJSON = JSON.stringify(notes);
   fs.writeFileSync("notes.json", notesJSON);
 };
