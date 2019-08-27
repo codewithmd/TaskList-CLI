@@ -9,10 +9,9 @@ const success = chalk.bold.greenBright;
 
 const addNote = ({ title, body }) => {
   const notes = loadNotes();
+  const isDuplicate = notes.find(note => note.title === title);
 
-  const isDuplicates = notes.filter(note => note.title === title);
-
-  if (isDuplicates.length === 0) {
+  if (!isDuplicate) {
     notes.push({ title, body });
     saveNote(notes);
     log(success("Note Added"));
@@ -40,12 +39,13 @@ const readNote = ({ title }) => {
   if (!note) log(error("There is no such note with the given title"));
   else {
     log(success("Here you go.."));
-    console.log(note);
+    console.log(`Title: ${note.title} Body: ${note.body}`);
   }
 };
 
 const listNotes = () => {
   const notes = loadNotes();
+
   log(success("Here you go..."));
   console.log(`There are totle ${notes.length} notes.`);
   notes.forEach(note => {
