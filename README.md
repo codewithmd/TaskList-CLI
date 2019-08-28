@@ -1,1 +1,1 @@
-##A Note Taking CLI App.
+## A Note Taking CLI App
