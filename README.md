@@ -1,1 +1,0 @@
-##A Note Taking CLI App
